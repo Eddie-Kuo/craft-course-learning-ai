@@ -5,10 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Form } from "./ui/form";
+import { useState } from "react";
 
 type AuthInput = z.infer<typeof authFormSchema>;
+type Variant = "LOGIN" | "REGISTER";
 
 function AuthForm() {
+  const [variant, setVariant] = useState<Variant>("LOGIN");
+
   // define the form
   const form = useForm<AuthInput>({
     resolver: zodResolver(authFormSchema),
