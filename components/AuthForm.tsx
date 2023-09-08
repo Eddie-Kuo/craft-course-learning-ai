@@ -4,17 +4,21 @@ import authFormSchema from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Form } from "./ui/form";
 import { useState } from "react";
+import AuthInput from "./AuthInput";
 
-type AuthInput = z.infer<typeof authFormSchema>;
+type Input = z.infer<typeof authFormSchema>;
 type Variant = "LOGIN" | "REGISTER";
 
 function AuthForm() {
-  const [variant, setVariant] = useState<Variant>("LOGIN");
+  const [variant, setVariant] = useState<Variant>("REGISTER");
 
   // define the form
-  const form = useForm<AuthInput>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Input>({
     resolver: zodResolver(authFormSchema),
     defaultValues: {
       name: "",
@@ -24,19 +28,25 @@ function AuthForm() {
   });
 
   // handle form submission
-  const onSubmit = (data: AuthInput) => {
+  const onSubmit = (data: Input) => {
     // TODO: handle form submission
   };
 
   return (
     <div className="mx-auto mt-8 sm:w-full sm:max-w-md">
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6"
-          ></form>
-        </Form>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+          {/* Register a user */}
+          {variant === "REGISTER" && (
+            <AuthInput
+              id="name"
+              label="Name"
+              register={register}
+              errors={errors}
+              required
+            />
+          )}
+        </form>
       </div>
     </div>
   );
