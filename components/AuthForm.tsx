@@ -46,6 +46,22 @@ function AuthForm() {
               required
             />
           )}
+          <AuthInput
+            id="email"
+            label="Email Address"
+            type="email"
+            register={register}
+            errors={errors}
+            required
+          />
+          <AuthInput
+            id="password"
+            label="Password"
+            type="password"
+            register={register}
+            errors={errors}
+            required
+          />
         </form>
       </div>
     </div>
