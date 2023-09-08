@@ -33,8 +33,11 @@ function AuthForm() {
   };
 
   return (
-    <div className="mx-auto mt-8 sm:w-full sm:max-w-md">
-      <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+    <div className="mx-auto mt-4 sm:w-full sm:max-w-md">
+      <div className=" bg-white/30 px-4 py-8 shadow-xl sm:rounded-lg sm:px-10">
+        <p className="mb-4 text-center text-sm font-light text-gray-500">
+          Ready to Learn? Sign in or create an account to get started
+        </p>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           {/* Register a user */}
           {variant === "REGISTER" && (
