@@ -9,6 +9,7 @@ import AuthInput from "./AuthInput";
 import { Button } from "./ui/button";
 import AuthButton from "./AuthButton";
 import AuthSocialButton from "./AuthSocialButton";
+import { BsGithub, BsGoogle } from "react-icons/bs";
 
 type Input = z.infer<typeof authFormSchema>;
 type Variant = "LOGIN" | "REGISTER";
@@ -80,18 +81,22 @@ function AuthForm() {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
+              <div className="w-[32%] border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">
-                Or continue with
-              </span>
+              <span className="px-2 text-gray-500">Or continue with</span>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-end">
+              <div className="w-[32%] border-t border-gray-300" />
             </div>
           </div>
 
           <div className="mt-6 flex gap-2">
-            <AuthSocialButton />
-            <AuthSocialButton />
+            <AuthSocialButton
+              icon={BsGithub}
+              // todo: add event listener to sign in with socials
+            />
+            <AuthSocialButton icon={BsGoogle} />
           </div>
         </div>
       </div>

@@ -37,7 +37,7 @@ function AuthInput({
         {...register(id, { required })}
         placeholder=""
         className={cn(
-          "text-md invalid:border-b-1 text-darkText peer block w-full appearance-none rounded-md bg-neutral-100 px-3 pb-1 pt-5 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-inset focus:ring-sky-100",
+          "text-md text-darkText peer block w-full appearance-none rounded-md bg-neutral-100 px-3 pb-1 pt-5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-inset focus:ring-slate-300",
           errors[id] && "focus:ring-rose-500",
           disabled && "cursor-default opacity-50",
         )}

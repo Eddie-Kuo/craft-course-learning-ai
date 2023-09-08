@@ -30,7 +30,8 @@ function AuthButton({
         fullWidth && "w-full",
         danger &&
           "bg-rose-500 hover:bg-rose-600 focus-visible:outline-rose-600",
-        !danger && "bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600",
+        !danger &&
+          "bg-slate-500 hover:bg-slate-600 focus-visible:outline-slate-600",
       )}
     >
       {children}
