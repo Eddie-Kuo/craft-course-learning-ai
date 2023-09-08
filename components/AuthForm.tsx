@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
 import AuthInput from "./AuthInput";
+import { Button } from "./ui/button";
+import AuthButton from "./AuthButton";
 
 type Input = z.infer<typeof authFormSchema>;
 type Variant = "LOGIN" | "REGISTER";
@@ -65,6 +67,12 @@ function AuthForm() {
             errors={errors}
             required
           />
+
+          <div>
+            <AuthButton fullWidth type="submit">
+              {variant === "REGISTER" ? "Register" : "Login"}
+            </AuthButton>
+          </div>
         </form>
       </div>
     </div>
