@@ -17,9 +17,6 @@ function Home() {
         <h5 className="text-darkText text-center text-lg font-bold">
           Generate courses. Master concepts.
         </h5>
-        {/* <p className="mt-4 text-center text-sm font-light text-gray-500">
-          Ready to Learn? Sign in or create an account
-        </p> */}
       </div>
       <AuthForm />
     </div>

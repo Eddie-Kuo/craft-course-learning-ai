@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useCallback, useState } from "react";
 import AuthInput from "./AuthInput";
-import { Button } from "./ui/button";
 import AuthButton from "./AuthButton";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
@@ -22,6 +21,7 @@ function AuthForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Input>({
     resolver: zodResolver(authFormSchema),
     defaultValues: {
@@ -34,7 +34,18 @@ function AuthForm() {
   // handle form submission
   const onSubmit = (data: Input) => {
     // TODO: handle form submission
+    console.log(data);
+    reset();
   };
+
+  // toggle between login and register
+  const toggleVariant = useCallback(() => {
+    if (variant === "LOGIN") {
+      setVariant("REGISTER");
+    } else {
+      setVariant("LOGIN");
+    }
+  }, [variant]);
 
   return (
     <div className="mx-auto mt-4 sm:w-full sm:max-w-md">
@@ -45,22 +56,35 @@ function AuthForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           {/* Register a user */}
           {variant === "REGISTER" && (
-            <AuthInput
-              id="name"
-              label="Name"
-              register={register}
-              errors={errors}
-              required
-            />
+            <>
+              <AuthInput
+                id="name"
+                label="Name"
+                register={register}
+                errors={errors}
+                required
+              />
+              {errors.name && (
+                <span className="text-xs text-rose-600">
+                  {errors.name.message}
+                </span>
+              )}
+            </>
           )}
           <AuthInput
             id="email"
             label="Email Address"
-            type="email"
+            type="name"
             register={register}
             errors={errors}
             required
           />
+          {errors.email && (
+            <span className="text-xs text-rose-600">
+              {errors.email.message}
+            </span>
+          )}
+
           <AuthInput
             id="password"
             label="Password"
@@ -69,6 +93,13 @@ function AuthForm() {
             errors={errors}
             required
           />
+
+          {errors.password && (
+            //Todo: refactor input errors
+            <span className="text-xs text-rose-600">
+              {errors.password.message}
+            </span>
+          )}
 
           <div>
             <AuthButton fullWidth type="submit">
@@ -97,6 +128,16 @@ function AuthForm() {
               // todo: add event listener to sign in with socials
             />
             <AuthSocialButton icon={BsGoogle} />
+          </div>
+        </div>
+
+        {/* Toggle between login and register */}
+        <div className="mt-6 flex justify-center gap-2 px-2 text-sm text-gray-500">
+          <div>
+            {variant === "REGISTER" ? "Already have an account?" : "New here?"}
+          </div>
+          <div onClick={toggleVariant} className="cursor-pointer underline">
+            {variant === "REGISTER" ? "Login" : "Create an Account"}
           </div>
         </div>
       </div>
