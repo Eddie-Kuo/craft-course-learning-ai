@@ -9,6 +9,7 @@ import AuthInput from "./AuthInput";
 import AuthButton from "./AuthButton";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
+import AuthInputError from "./AuthInputError";
 
 type Input = z.infer<typeof authFormSchema>;
 type Variant = "LOGIN" | "REGISTER";
@@ -64,11 +65,7 @@ function AuthForm() {
                 errors={errors}
                 required
               />
-              {errors.name && (
-                <span className="text-xs text-rose-600">
-                  {errors.name.message}
-                </span>
-              )}
+              {errors.name && <AuthInputError error={errors.name.message} />}
             </>
           )}
           <AuthInput
@@ -79,11 +76,7 @@ function AuthForm() {
             errors={errors}
             required
           />
-          {errors.email && (
-            <span className="text-xs text-rose-600">
-              {errors.email.message}
-            </span>
-          )}
+          {errors.email && <AuthInputError error={errors.email.message} />}
 
           <AuthInput
             id="password"
@@ -95,10 +88,7 @@ function AuthForm() {
           />
 
           {errors.password && (
-            //Todo: refactor input errors
-            <span className="text-xs text-rose-600">
-              {errors.password.message}
-            </span>
+            <AuthInputError error={errors.password.message} />
           )}
 
           <div>
