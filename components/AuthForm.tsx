@@ -4,13 +4,14 @@ import authFormSchema from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AuthInput from "./AuthInput";
 import AuthButton from "./AuthButton";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import AuthInputError from "./AuthInputError";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Input = z.infer<typeof authFormSchema>;
 type Variant = "LOGIN" | "REGISTER";
@@ -18,6 +19,16 @@ type Variant = "LOGIN" | "REGISTER";
 function AuthForm() {
   const [variant, setVariant] = useState<Variant>("REGISTER");
   const [isLoading, setIsLoading] = useState(false);
+
+  const session = useSession();
+  const router = useRouter();
+
+  // redirect authenticated users to dashboard
+  useEffect(() => {
+    if (session?.status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [session?.status, router]);
 
   // define the form
   const {
