@@ -1,6 +1,8 @@
 import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
+import CredentialsProviders from "next-auth/providers/credentials";
 import prisma from "@/lib/db";
 import NextAuth from "next-auth/next";
 
@@ -40,7 +42,17 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     // Github
+    GithubProvider({
+      clientId: getGithubCredentials().clientId,
+      clientSecret: getGithubCredentials().clientSecret,
+    }),
+
     // Google
+    GoogleProvider({
+      clientId: getGoogleCredentials().clientId,
+      clientSecret: getGoogleCredentials().clientSecret,
+    }),
+
     // Credentials Provider
   ],
   callbacks: {},
