@@ -1,4 +1,4 @@
-import { NextAuthOptions } from "next-auth";
+import { DefaultSession, NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
@@ -6,6 +6,22 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/lib/db";
 import NextAuth from "next-auth/next";
 import bcrypt from "bcrypt";
+
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+      credits: number;
+    } & DefaultSession["user"];
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+    credits: number;
+  }
+}
 
 // get client ID and secrets for Github
 function getGithubCredentials() {
@@ -88,11 +104,34 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  callbacks: {},
+  callbacks: {
+    jwt: async ({ token }) => {
+      const db_user = await prisma.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      });
+      if (db_user) {
+        token.id = db_user.id;
+        token.credits = db_user.credits;
+      }
+      return token;
+    },
+    session: ({ session, token }) => {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+        session.user.credits = token.credits;
+      }
+      return session;
+    },
+  },
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET as string,
 };
 
 const handler = NextAuth(authOptions);
