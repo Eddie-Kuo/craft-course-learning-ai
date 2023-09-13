@@ -2,9 +2,10 @@ import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProviders from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/lib/db";
 import NextAuth from "next-auth/next";
+import bcrypt from "bcrypt";
 
 // get client ID and secrets for Github
 function getGithubCredentials() {
@@ -54,6 +55,38 @@ export const authOptions: NextAuthOptions = {
     }),
 
     // Credentials Provider
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "email", type: "text" },
+        password: { label: "password", type: "password" },
+      },
+
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Invalid Credentials");
+        }
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!user || !user.hashedPassword) {
+          throw new Error("Invalid Credentials");
+        }
+
+        // validate passwords
+        const isCorrectPassword = await bcrypt.compare(
+          credentials.password,
+          user.hashedPassword,
+        );
+        if (!isCorrectPassword) {
+          throw new Error("Invalid Password");
+        }
+
+        return user;
+      },
+    }),
   ],
   callbacks: {},
   session: {
