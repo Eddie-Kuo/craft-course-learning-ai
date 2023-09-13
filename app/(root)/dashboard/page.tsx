@@ -1,13 +1,17 @@
 "use client";
-import { getSession, signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function Home() {
-  const session = getSession();
-  console.log(session);
+  const session = useSession();
+
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex h-screen flex-col items-center justify-center gap-3">
       <p className=" text-red-400">Welcome to the dashboard!!</p>
-      <button onClick={() => signOut()}>Log out</button>
+      <p>{session.data?.user.name}</p>
+      <div onClick={() => signOut()}>
+        <Link href="/">Logout</Link>
+      </div>
     </div>
   );
 }
