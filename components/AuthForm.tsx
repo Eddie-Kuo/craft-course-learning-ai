@@ -9,7 +9,6 @@ import AuthInput from "./AuthInput";
 import AuthButton from "./AuthButton";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
-import AuthInputError from "./AuthInputError";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -90,10 +89,9 @@ function AuthForm() {
                 id="name"
                 label="Name"
                 register={register}
-                errors={errors}
+                errorMessage={errors.name?.message}
                 required
               />
-              {errors.name && <AuthInputError error={errors.name.message} />}
             </>
           )}
           <AuthInput
@@ -101,23 +99,18 @@ function AuthForm() {
             label="Email Address"
             type="name"
             register={register}
-            errors={errors}
+            errorMessage={errors.email?.message}
             required
           />
-          {errors.email && <AuthInputError error={errors.email.message} />}
 
           <AuthInput
             id="password"
             label="Password"
             type="password"
             register={register}
-            errors={errors}
+            errorMessage={errors.password?.message}
             required
           />
-
-          {errors.password && (
-            <AuthInputError error={errors.password.message} />
-          )}
 
           <div>
             <AuthButton fullWidth type="submit">
