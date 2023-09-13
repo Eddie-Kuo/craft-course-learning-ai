@@ -10,12 +10,14 @@ import AuthButton from "./AuthButton";
 import AuthSocialButton from "./AuthSocialButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import AuthInputError from "./AuthInputError";
+import { signIn } from "next-auth/react";
 
 type Input = z.infer<typeof authFormSchema>;
 type Variant = "LOGIN" | "REGISTER";
 
 function AuthForm() {
   const [variant, setVariant] = useState<Variant>("REGISTER");
+  const [isLoading, setIsLoading] = useState(false);
 
   // define the form
   const {
@@ -47,6 +49,21 @@ function AuthForm() {
       setVariant("LOGIN");
     }
   }, [variant]);
+
+  // sign in with socials submit handler
+  const socialSignIn = (action: string) => {
+    setIsLoading(true);
+    signIn(action, { redirect: false })
+      .then((callback) => {
+        if (callback?.error) {
+          console.log("Social sign in failed:", callback.error);
+        }
+        if (callback?.ok) {
+          console.log("Successfully logged in");
+        }
+      })
+      .finally(() => setIsLoading(false));
+  };
 
   return (
     <div className="mx-auto mt-4 sm:w-full sm:max-w-md">
@@ -115,9 +132,12 @@ function AuthForm() {
           <div className="mt-6 flex gap-2">
             <AuthSocialButton
               icon={BsGithub}
-              // todo: add event listener to sign in with socials
+              onClick={() => socialSignIn("github")}
             />
-            <AuthSocialButton icon={BsGoogle} />
+            <AuthSocialButton
+              icon={BsGoogle}
+              onClick={() => socialSignIn("google")}
+            />
           </div>
         </div>
 
