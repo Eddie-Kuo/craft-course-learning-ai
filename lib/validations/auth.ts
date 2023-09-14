@@ -9,3 +9,8 @@ const authFormSchema = z.object({
 });
 
 export default authFormSchema;
+
+//* Bug: Signing in user on initial page load wouldn't work.
+// button would not register and come off as disabled
+// Problem: The zod resolver was trying to validate a non existent name field.
+// Temp Fix: removed the minimum requirements for at least 3 characters in the name field
