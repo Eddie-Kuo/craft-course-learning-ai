@@ -46,9 +46,7 @@ function AuthForm() {
 
   // handle form submission
   const onSubmit = (data: Input) => {
-    // TODO: handle form submission
-    console.log(data);
-    reset();
+    setIsLoading(true);
   };
 
   // toggle between login and register
