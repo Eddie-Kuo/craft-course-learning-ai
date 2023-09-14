@@ -47,6 +47,14 @@ function AuthForm() {
   // handle form submission
   const onSubmit = (data: Input) => {
     setIsLoading(true);
+
+    if (variant === "REGISTER") {
+      // Axios Register
+    }
+
+    if (variant === "LOGIN") {
+      // NextAuth Sign In
+    }
   };
 
   // toggle between login and register
