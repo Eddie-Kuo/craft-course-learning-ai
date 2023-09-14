@@ -2,25 +2,35 @@
 
 import authFormSchema from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { useCallback, useEffect, useState } from "react";
-import AuthInput from "./AuthInput";
-import AuthButton from "./AuthButton";
-import AuthSocialButton from "./AuthSocialButton";
-import { BsGithub, BsGoogle } from "react-icons/bs";
+import axios from "axios";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { BsGithub, BsGoogle } from "react-icons/bs";
+import * as z from "zod";
+import AuthButton from "./AuthButton";
+import AuthInput from "./AuthInput";
+import AuthSocialButton from "./AuthSocialButton";
 
-type Input = z.infer<typeof authFormSchema>;
+type AuthInput = z.infer<typeof authFormSchema>;
 type Variant = "LOGIN" | "REGISTER";
 
 function AuthForm() {
-  const [variant, setVariant] = useState<Variant>("REGISTER");
+  const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
 
   const session = useSession();
   const router = useRouter();
+
+  // toggle between login and register
+  const toggleVariant = useCallback(() => {
+    if (variant === "LOGIN") {
+      setVariant("REGISTER");
+    } else {
+      setVariant("LOGIN");
+    }
+  }, [variant]);
 
   // redirect authenticated users to dashboard
   useEffect(() => {
@@ -34,8 +44,7 @@ function AuthForm() {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm<Input>({
+  } = useForm<AuthInput>({
     resolver: zodResolver(authFormSchema),
     defaultValues: {
       name: "",
@@ -45,26 +54,37 @@ function AuthForm() {
   });
 
   // handle form submission
-  const onSubmit = (data: Input) => {
+  const onFormSubmit: SubmitHandler<AuthInput> = (data) => {
     setIsLoading(true);
 
     if (variant === "REGISTER") {
       // Axios Register
+      axios
+        .post("/api/register", data)
+        .then(() => signIn("credentials", data))
+        .catch(() => console.log("something is wrong with credentials login"))
+        .finally(() => setIsLoading(false));
     }
 
     if (variant === "LOGIN") {
+      console.log("button pressed");
       // NextAuth Sign In
+      signIn("credentials", {
+        ...data,
+        redirect: false,
+      })
+        .then((callback) => {
+          if (callback?.error) {
+            console.log("Credentials sign in failed", callback.error);
+          }
+          if (callback?.ok) {
+            console.log("Successfully logged in");
+            router.push("/dashboard");
+          }
+        })
+        .finally(() => setIsLoading(false));
     }
   };
-
-  // toggle between login and register
-  const toggleVariant = useCallback(() => {
-    if (variant === "LOGIN") {
-      setVariant("REGISTER");
-    } else {
-      setVariant("LOGIN");
-    }
-  }, [variant]);
 
   // sign in with socials submit handler
   const socialSignIn = (action: string) => {
@@ -87,7 +107,7 @@ function AuthForm() {
         <p className="mb-4 text-center text-sm font-light text-gray-500">
           Ready to Learn? Sign in or create an account to get started
         </p>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-3">
           {/* Register a user */}
           {variant === "REGISTER" && (
             <>
@@ -119,8 +139,8 @@ function AuthForm() {
           />
 
           <div>
-            <AuthButton fullWidth type="submit">
-              {variant === "REGISTER" ? "Register" : "Login"}
+            <AuthButton fullWidth type="submit" disabled={isLoading}>
+              {variant === "LOGIN" ? "Sign In" : "Register"}
             </AuthButton>
           </div>
         </form>
