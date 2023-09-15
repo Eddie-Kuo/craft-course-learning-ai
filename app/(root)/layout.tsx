@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import AuthContext from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -19,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, "bg-zinc-200")}>
-        <Navbar />
-        {children}
+        <AuthContext>
+          <Navbar />
+          {children}
+        </AuthContext>
       </body>
     </html>
   );
