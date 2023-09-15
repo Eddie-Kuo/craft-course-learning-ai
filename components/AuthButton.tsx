@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 
 interface ButtonProps {
-  type: "button" | "submit";
+  type?: "button" | "submit" | undefined;
   fullWidth?: boolean;
   children?: React.ReactNode;
   onClick?: () => void;
