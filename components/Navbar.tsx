@@ -1,3 +1,4 @@
+import getSession from "@/lib/actions/getSession";
 import Image from "next/image";
 import Link from "next/link";
 import Avatar from "./Avatar";
@@ -5,6 +6,8 @@ import Avatar from "./Avatar";
 interface NavbarProps {}
 
 async function Navbar({}: NavbarProps) {
+  const session = await getSession();
+  console.log(session);
   return (
     <nav className="fixed top-0 z-30 flex w-full items-center justify-between border border-b-zinc-600/30 bg-blue-100 px-6 py-4">
       <Link href="/" className="flex items-center gap-4">
@@ -15,7 +18,7 @@ async function Navbar({}: NavbarProps) {
       <div className="flex items-center gap-6">
         <Link href="/">Dashboard</Link>
         <Link href="/create">Create Course</Link>
-        <Avatar />
+        <Avatar user={session!.user} credits={session?.user.credits!} />
       </div>
     </nav>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { User } from "next-auth";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -7,9 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 
-interface AvatarProps {}
+interface AvatarProps {
+  user: User;
+  credits: number;
+}
 
-function Avatar({}: AvatarProps) {
+function Avatar({ user, credits }: AvatarProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -18,9 +22,9 @@ function Avatar({}: AvatarProps) {
       <DropdownMenuContent align="end">
         <div className="flex items-center justify-center gap-2 p-2">
           <div>
-            <p>Name</p>
-            <p>Email</p>
-            <p>Available Credits:</p>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+            <p>Available Credits: {credits}</p>
             <p>Settings</p>
             <p>Sign Out</p>
           </div>
