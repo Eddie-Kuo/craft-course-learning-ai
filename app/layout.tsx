@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import AuthContext from "@/context/AuthContext";
 import ToasterContext from "@/context/ToasterContext";
 import type { Metadata } from "next";
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthContext>
           <ToasterContext />
+          <Navbar />
           {children}
         </AuthContext>
       </body>

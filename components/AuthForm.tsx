@@ -17,8 +17,6 @@ import AuthSocialButton from "./AuthSocialButton";
 type AuthInput = z.infer<typeof authFormSchema>;
 type Variant = "LOGIN" | "REGISTER";
 
-// TODO: add toaster notifications for successfully signing in and remove the console logs
-
 function AuthForm() {
   const [variant, setVariant] = useState<Variant>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
