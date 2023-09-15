@@ -7,6 +7,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import * as z from "zod";
 import AuthButton from "./AuthButton";
@@ -64,7 +65,7 @@ function AuthForm() {
       axios
         .post("/api/register", data)
         .then(() => signIn("credentials", data))
-        .catch(() => console.log("something is wrong with credentials login"))
+        .catch(() => toast.error("Registration failed. Please try again!"))
         .finally(() => setIsLoading(false));
     }
 
@@ -76,10 +77,10 @@ function AuthForm() {
       })
         .then((callback) => {
           if (callback?.error) {
-            console.log("Credentials sign in failed", callback.error);
+            toast.error("Invalid Credentials!");
           }
-          if (callback?.ok) {
-            console.log("Successfully logged in");
+          if (callback?.ok && !callback?.error) {
+            toast.success("Logging In!");
             router.push("/dashboard");
           }
         })
@@ -93,10 +94,10 @@ function AuthForm() {
     signIn(action, { redirect: false })
       .then((callback) => {
         if (callback?.error) {
-          console.log("Social sign in failed:", callback.error);
+          toast.error("Sign in failed. Please try again!");
         }
-        if (callback?.ok) {
-          console.log("Successfully logged in");
+        if (callback?.ok && !callback?.error) {
+          toast.success("Logging in!");
         }
       })
       .finally(() => setIsLoading(false));
