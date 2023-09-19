@@ -10,13 +10,13 @@ async function Navbar({}: NavbarProps) {
   //   console.log(session);
   return (
     <nav className="fixed top-0 z-30 flex w-full items-center justify-between bg-zinc-200 px-6 py-4 shadow-lg">
-      <Link href="/" className="flex items-center gap-4">
+      <Link href="/dashboard" className="flex items-center gap-4">
         <Image alt="logo" height={65} width={65} src="/assets/logo.png" />
         <p className="text-xl font-semibold">Craft Course Learning</p>
       </Link>
 
       <div className="flex items-center gap-6">
-        <Link className="text-lg font-bold" href="/">
+        <Link className="text-lg font-bold" href="/dashboard">
           Dashboard
         </Link>
         <Link className="text-lg font-bold" href="/create">
