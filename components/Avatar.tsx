@@ -17,17 +17,13 @@ interface AvatarProps {
   credits: number;
 }
 
-//Todo!: Add in a default image for users who don't have a profile picture and remove the declaration in Image source since user image may not always be supplied
-
 function Avatar({ user, credits }: AvatarProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        {/* Hydration Error: Button Inside a button */}
-        {/* <Button>User</Button> */}
         <Image
           alt="user picture"
-          src={user.image!}
+          src={user?.image || "/assets/avatarPlaceholder.jpg"}
           width={50}
           height={50}
           className="rounded-full"
@@ -39,7 +35,7 @@ function Avatar({ user, credits }: AvatarProps) {
             <div className="mb-2 flex items-center gap-3">
               <Image
                 alt="user picture"
-                src={user.image!}
+                src={user?.image || "/assets/avatarPlaceholder.jpg"}
                 width={40}
                 height={40}
                 className="rounded-full"
@@ -55,10 +51,9 @@ function Avatar({ user, credits }: AvatarProps) {
           </div>
 
           {/* Settings */}
-
           <Link
             className="text-md flex justify-start rounded-md bg-slate-100 px-4 py-2 font-medium text-darkText hover:bg-slate-200"
-            href="/settings"
+            href="/upgrade"
           >
             Upgrade to Pro
           </Link>
