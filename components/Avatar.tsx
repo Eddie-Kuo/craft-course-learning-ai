@@ -1,6 +1,7 @@
 "use client";
 
 import { User } from "next-auth";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { HiArrowRightOnRectangle } from "react-icons/hi2";
@@ -17,7 +18,6 @@ interface AvatarProps {
 }
 
 //Todo!: Add in a default image for users who don't have a profile picture and remove the declaration in Image source since user image may not always be supplied
-// todo: add functionality to logout button
 
 function Avatar({ user, credits }: AvatarProps) {
   return (
@@ -64,7 +64,10 @@ function Avatar({ user, credits }: AvatarProps) {
           </Link>
 
           {/* Logout */}
-          <Button className="text-md flex items-center justify-between bg-transparent text-darkText hover:bg-slate-100">
+          <Button
+            className="text-md flex items-center justify-between bg-transparent text-darkText hover:bg-slate-100"
+            onClick={() => signOut()}
+          >
             Sign Out
             <HiArrowRightOnRectangle />
           </Button>
