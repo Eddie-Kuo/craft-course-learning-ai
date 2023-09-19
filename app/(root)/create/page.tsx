@@ -1,3 +1,4 @@
+import CreateCourseForm from "@/components/CreateCourseForm";
 import getSession from "@/lib/actions/getSession";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
@@ -20,6 +21,7 @@ async function CreatePage({}: pageProps) {
           ullam doloribus nobis!
         </div>
       </div>
+      <CreateCourseForm />
     </div>
   );
 }
