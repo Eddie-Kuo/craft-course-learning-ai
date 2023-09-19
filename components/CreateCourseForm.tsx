@@ -3,9 +3,13 @@
 import createChapterSchema from "@/lib/validations/course";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { AiOutlinePlus } from "react-icons/ai";
+import { RiDeleteBin5Line } from "react-icons/ri";
 import { z } from "zod";
+import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { Input } from "./ui/input";
+import { Separator } from "./ui/separator";
 
 type CourseInput = z.infer<typeof createChapterSchema>;
 
@@ -68,6 +72,27 @@ function CreateCourseForm() {
               />
             );
           })}
+
+          <div className="mt-4 flex items-center justify-center">
+            <Separator className="flex-[1] bg-zinc-400" />
+            <div className="mx-4 flex gap-2">
+              <Button
+                variant="secondary"
+                className="bg-zinc-100 font-bold hover:bg-zinc-300"
+              >
+                Add Unit
+                <AiOutlinePlus className="ml-2 h-4 w-4" />
+              </Button>
+              <Button
+                variant="destructive"
+                className="bg-rose-700 font-bold hover:bg-rose-800"
+              >
+                Remove Unit
+                <RiDeleteBin5Line className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+            <Separator className="flex-[1] bg-zinc-400" />
+          </div>
         </form>
       </Form>
     </div>
