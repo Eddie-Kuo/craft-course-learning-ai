@@ -2,6 +2,7 @@
 
 import createChapterSchema from "@/lib/validations/course";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -49,31 +50,47 @@ function CreateCourseForm() {
             }}
           />
 
-          {form.watch("units").map((_, index) => {
-            return (
-              <FormField
-                control={form.control}
-                name={`units.${index}`}
-                key={index}
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex w-full flex-col items-start space-y-0 pt-2 sm:flex-row sm:items-center">
-                      <FormLabel className="flex-[1] px-1 text-xl font-semibold">
-                        Unit {index + 1}
-                      </FormLabel>
-                      <FormControl className="flex-[8]">
-                        <Input
-                          className="focus-visible:ring-slate-500"
-                          placeholder="Enter subtopic of choice for the course"
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            );
-          })}
+          <AnimatePresence>
+            {form.watch("units").map((_, index) => {
+              return (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    height: 0,
+                  }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{
+                    opacity: { duration: 0.2 },
+                    height: { duration: 0.2 },
+                  }}
+                  key={index}
+                >
+                  <FormField
+                    control={form.control}
+                    name={`units.${index}`}
+                    key={index}
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex w-full flex-col items-start space-y-0 pt-2 sm:flex-row sm:items-center">
+                          <FormLabel className="flex-[1] px-1 text-xl font-semibold">
+                            Unit {index + 1}
+                          </FormLabel>
+                          <FormControl className="flex-[8]">
+                            <Input
+                              className="focus-visible:ring-slate-500"
+                              placeholder="Enter subtopic of choice for the course"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
 
           <div className="mt-4 flex items-center justify-center">
             <Separator className="flex-[1] bg-zinc-400" />
