@@ -120,6 +120,15 @@ function CreateCourseForm() {
             </div>
             <Separator className="flex-[1] bg-zinc-400" />
           </div>
+
+          <Button
+            type="submit"
+            className="mt-4 w-full bg-sky-500 font-semibold hover:bg-sky-400"
+            variant="secondary"
+            size="lg"
+          >
+            Generate Course!
+          </Button>
         </form>
       </Form>
     </div>
