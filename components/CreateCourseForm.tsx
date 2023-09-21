@@ -2,6 +2,8 @@
 
 import createChapterSchema from "@/lib/validations/course";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -15,6 +17,14 @@ import { Separator } from "./ui/separator";
 type CourseInput = z.infer<typeof createChapterSchema>;
 
 function CreateCourseForm() {
+  // mutation is any action that hits an api endpoint - mutate renamed to createChapter
+  const { mutate: createChapter, isLoading } = useMutation({
+    mutationFn: async ({ title, units }: CourseInput) => {
+      const response = await axios.post("/api/course/createChapter");
+      return response.data;
+    },
+  });
+
   const form = useForm<CourseInput>({
     resolver: zodResolver(createChapterSchema),
     defaultValues: {
@@ -23,7 +33,13 @@ function CreateCourseForm() {
     },
   });
 
-  const onSubmit = (data: CourseInput) => {};
+  const onSubmit = (data: CourseInput) => {
+    // mutation function
+    createChapter(data, {
+      onSuccess: () => {},
+      onError: () => {},
+    });
+  };
 
   return (
     <div className="w-full">
@@ -126,6 +142,7 @@ function CreateCourseForm() {
             className="mt-4 w-full bg-sky-500 font-semibold hover:bg-sky-400"
             variant="secondary"
             size="lg"
+            disabled={isLoading}
           >
             Generate Course!
           </Button>
