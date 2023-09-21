@@ -1,4 +1,5 @@
 import { strict_output } from "@/lib/gpt";
+import getUnsplashImage from "@/lib/unsplash";
 import createChapterSchema from "@/lib/validations/course";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
@@ -28,8 +29,24 @@ export async function POST(request: Request) {
       },
     );
 
+    const imageSearchTerm = await strict_output(
+      "You are an AI capable of finding the most relevant image for a course",
+      `Please provide a good image search term for the title of a course: ${title}. The search term will be fed into the unsplash api so make sure the search term is accurate, relevant, and will return the best results.`,
+      {
+        image_search_term: "a good search term for the title of the course",
+      },
+    );
+
+    const course_image = await getUnsplashImage(
+      imageSearchTerm.image_search_term,
+    );
+
     console.log(output_unit);
-    return NextResponse.json(output_unit);
+    return NextResponse.json({
+      output_unit,
+      imageSearchTerm,
+      course_image,
+    });
   } catch (error) {
     if (error instanceof ZodError) {
       return new NextResponse("Invalid request", { status: 400 });
