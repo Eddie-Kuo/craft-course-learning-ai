@@ -5,7 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { z } from "zod";
@@ -17,10 +19,15 @@ import { Separator } from "./ui/separator";
 type CourseInput = z.infer<typeof createChapterSchema>;
 
 function CreateCourseForm() {
-  // mutation is any action that hits an api endpoint - mutate renamed to createChapter
+  const router = useRouter();
+
+  // mutation is any action (create/update/delete) that hits an api endpoint - mutate renamed to createChapter
   const { mutate: createChapter, isLoading } = useMutation({
     mutationFn: async ({ title, units }: CourseInput) => {
-      const response = await axios.post("/api/course/createChapter");
+      const response = await axios.post("/api/course/createChapter", {
+        title,
+        units,
+      });
       return response.data;
     },
   });
@@ -34,10 +41,20 @@ function CreateCourseForm() {
   });
 
   const onSubmit = (data: CourseInput) => {
-    // mutation function
+    if (data.units.some((unit) => unit === "")) {
+      toast.error("Please fill out all available fields.");
+      return;
+    }
+    //mutation function
     createChapter(data, {
-      onSuccess: () => {},
-      onError: () => {},
+      onSuccess: ({ course_id }) => {
+        toast.success("Generating Course!");
+        router.push(`/create/${course_id}`);
+      },
+      onError: (error) => {
+        console.log("Error encountered while generating course");
+        toast.error("Server Issue. Please try again later!");
+      },
     });
   };
 
