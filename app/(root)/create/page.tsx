@@ -8,7 +8,7 @@ async function CreatePage({}: pageProps) {
   const session = await getSession();
 
   return (
-    <div className="mx-auto flex h-screen max-w-3xl flex-col items-center justify-center gap-4 px-8">
+    <div className="mx-auto flex h-screen max-w-3xl flex-col items-center gap-4 px-8 pt-44">
       <h1 className="text-center text-2xl font-bold text-darkText sm:text-4xl">
         Craft Course Learning AI
       </h1>

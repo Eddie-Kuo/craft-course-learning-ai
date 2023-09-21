@@ -33,7 +33,7 @@ function CreateCourseForm() {
             name="title"
             render={({ field }) => {
               return (
-                <FormItem className="flex w-full items-center space-y-0">
+                <FormItem className="flex w-full flex-col items-start space-y-0 sm:flex-row sm:items-center">
                   <FormLabel className="flex-[1] px-1 text-xl font-semibold">
                     Title
                   </FormLabel>
