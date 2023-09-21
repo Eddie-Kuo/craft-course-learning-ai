@@ -39,6 +39,7 @@ function CreateCourseForm() {
                   </FormLabel>
                   <FormControl className="flex-[8]">
                     <Input
+                      className="focus-visible:ring-slate-500"
                       placeholder=" Enter a main topic you want to learn more about"
                       {...field}
                     />
@@ -62,6 +63,7 @@ function CreateCourseForm() {
                       </FormLabel>
                       <FormControl className="flex-[8]">
                         <Input
+                          className="focus-visible:ring-slate-500"
                           placeholder="Enter subtopic of choice for the course"
                           {...field}
                         />
@@ -77,6 +79,10 @@ function CreateCourseForm() {
             <Separator className="flex-[1] bg-zinc-400" />
             <div className="mx-4 flex gap-2">
               <Button
+                type="button"
+                onClick={() => {
+                  form.setValue("units", [...form.watch("units"), ""]);
+                }}
                 variant="secondary"
                 className="bg-zinc-100 font-bold hover:bg-zinc-300"
               >
@@ -84,6 +90,10 @@ function CreateCourseForm() {
                 <AiOutlinePlus className="ml-2 h-4 w-4" />
               </Button>
               <Button
+                type="button"
+                onClick={() => {
+                  form.setValue("units", form.watch("units").slice(0, -1));
+                }}
                 variant="destructive"
                 className="bg-rose-700 font-bold hover:bg-rose-800"
               >
