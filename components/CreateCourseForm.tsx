@@ -48,7 +48,7 @@ function CreateCourseForm() {
     //mutation function
     createChapter(data, {
       onSuccess: ({ course_id }) => {
-        toast.success("Generating Course!");
+        toast.success("Success! Setting up your course.");
         router.push(`/create/${course_id}`);
       },
       onError: (error) => {
