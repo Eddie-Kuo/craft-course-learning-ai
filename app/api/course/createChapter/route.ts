@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       }[];
     }[];
 
-    let output_unit: outputUnits = await strict_output(
+    let generated_course: outputUnits = await strict_output(
       "You are an AI capable of curating course content, coming up with relevant chapter titles, and finding relevant youtube videos for each chapter",
       new Array(units.length).fill(
         `It is your job to create a course about ${title}. The user has requested to create chapters for each of the units. Then, for each chapter, provide a detailed youtube search query that can be used to find an informative educational video for each chapter. Each query should give an educational informative course in youtube.`,
@@ -50,7 +50,8 @@ export async function POST(request: Request) {
       },
     });
 
-    for (const unit of output_unit) {
+    // add all units in course to database
+    for (const unit of generated_course) {
       const title = unit.title;
       const prismaUnit = await prisma.unit.create({
         data: {
@@ -59,6 +60,7 @@ export async function POST(request: Request) {
         },
       });
 
+      // add all chapters in units to database
       await prisma.chapter.createMany({
         data: unit.chapters.map((chapter) => {
           return {

@@ -1,4 +1,4 @@
-import AuthContext from "@/context/AuthContext";
+import AuthContext from "@/context/Providers";
 import ToasterContext from "@/context/ToasterContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
