@@ -9,6 +9,7 @@ interface ButtonProps {
   onClick?: () => void;
   danger?: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 function AuthButton({
@@ -18,6 +19,7 @@ function AuthButton({
   onClick,
   danger,
   disabled,
+  className,
 }: ButtonProps) {
   return (
     <button
@@ -32,6 +34,7 @@ function AuthButton({
           "bg-rose-500 hover:bg-rose-600 focus-visible:outline-rose-600",
         !danger &&
           "bg-slate-500 hover:bg-slate-600 focus-visible:outline-slate-600",
+        className,
       )}
     >
       {children}

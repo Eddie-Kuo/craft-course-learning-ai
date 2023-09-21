@@ -1,11 +1,11 @@
-import { DefaultSession, NextAuthOptions } from "next-auth";
+import prisma from "@/lib/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import bcrypt from "bcrypt";
+import { DefaultSession, NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth/next";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import prisma from "@/lib/db";
-import NextAuth from "next-auth/next";
-import bcrypt from "bcrypt";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
