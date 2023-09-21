@@ -6,7 +6,7 @@ import axios from "axios";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import * as z from "zod";
@@ -55,7 +55,7 @@ function AuthForm() {
   });
 
   // handle form submission
-  const onFormSubmit: SubmitHandler<AuthInput> = (data) => {
+  const onFormSubmit = (data: AuthInput) => {
     setIsLoading(true);
 
     if (variant === "REGISTER") {
