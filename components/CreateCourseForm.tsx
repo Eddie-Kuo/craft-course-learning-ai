@@ -2,8 +2,12 @@
 
 import createChapterSchema from "@/lib/validations/course";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { z } from "zod";
@@ -15,6 +19,19 @@ import { Separator } from "./ui/separator";
 type CourseInput = z.infer<typeof createChapterSchema>;
 
 function CreateCourseForm() {
+  const router = useRouter();
+
+  // mutation is any action (create/update/delete) that hits an api endpoint - mutate renamed to createChapter
+  const { mutate: createChapter, isLoading } = useMutation({
+    mutationFn: async ({ title, units }: CourseInput) => {
+      const response = await axios.post("/api/course/createChapter", {
+        title,
+        units,
+      });
+      return response.data;
+    },
+  });
+
   const form = useForm<CourseInput>({
     resolver: zodResolver(createChapterSchema),
     defaultValues: {
@@ -23,7 +40,23 @@ function CreateCourseForm() {
     },
   });
 
-  const onSubmit = (data: CourseInput) => {};
+  const onSubmit = (data: CourseInput) => {
+    if (data.units.some((unit) => unit === "")) {
+      toast.error("Please fill out all available fields.");
+      return;
+    }
+    //mutation function
+    createChapter(data, {
+      onSuccess: ({ course_id }) => {
+        toast.success("Success! Setting up your course.");
+        router.push(`/create/${course_id}`);
+      },
+      onError: (error) => {
+        console.log("Error encountered while generating course");
+        toast.error("Server Issue. Please try again later!");
+      },
+    });
+  };
 
   return (
     <div className="w-full">
@@ -126,6 +159,7 @@ function CreateCourseForm() {
             className="mt-4 w-full bg-sky-500 font-semibold hover:bg-sky-400"
             variant="secondary"
             size="lg"
+            disabled={isLoading}
           >
             Generate Course!
           </Button>
