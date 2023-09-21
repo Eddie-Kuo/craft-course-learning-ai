@@ -1,3 +1,4 @@
+import prisma from "@/lib/db";
 import { strict_output } from "@/lib/gpt";
 import getUnsplashImage from "@/lib/unsplash";
 import createChapterSchema from "@/lib/validations/course";
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
         youtube_search_query: string;
         chapter_title: string;
       }[];
-    };
+    }[];
 
     let output_unit: outputUnits = await strict_output(
       "You are an AI capable of curating course content, coming up with relevant chapter titles, and finding relevant youtube videos for each chapter",
@@ -41,12 +42,35 @@ export async function POST(request: Request) {
       imageSearchTerm.image_search_term,
     );
 
-    console.log(output_unit);
-    return NextResponse.json({
-      output_unit,
-      imageSearchTerm,
-      course_image,
+    // create a new course in database
+    const course = await prisma.course.create({
+      data: {
+        name: title,
+        image: course_image,
+      },
     });
+
+    for (const unit of output_unit) {
+      const title = unit.title;
+      const prismaUnit = await prisma.unit.create({
+        data: {
+          name: title,
+          courseId: course.id,
+        },
+      });
+
+      await prisma.chapter.createMany({
+        data: unit.chapters.map((chapter) => {
+          return {
+            name: chapter.chapter_title,
+            youtubeSearchQuery: chapter.youtube_search_query,
+            unitId: prismaUnit.id,
+          };
+        }),
+      });
+    }
+
+    return NextResponse.json({ course_id: course.id });
   } catch (error) {
     if (error instanceof ZodError) {
       return new NextResponse("Invalid request", { status: 400 });
