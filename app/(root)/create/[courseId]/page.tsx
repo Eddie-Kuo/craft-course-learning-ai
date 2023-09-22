@@ -45,7 +45,7 @@ async function CoursePage({ params: { courseId } }: pageProps) {
           over them before clicking the confirmation button to continue.
         </div>
       </div>
-      <ConfirmChapters />
+      <ConfirmChapters course={course} />
     </div>
   );
 }
