@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Chapter, Course, Unit } from "@prisma/client";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import ChapterCard, { ChapterCardHandler } from "./ChapterCard";
 import { Button, buttonVariants } from "./ui/button";
@@ -18,6 +18,11 @@ interface ConfirmChaptersProps {
 }
 
 function ConfirmChapters({ course }: ConfirmChaptersProps) {
+  const [completedChapters, setCompletedChapters] = useState<Set<string>>(
+    new Set(),
+  );
+  const [isLoading, setIsLoading] = useState(false);
+
   const chapterRef: Record<string, React.RefObject<ChapterCardHandler>> = {};
   course.units.forEach((unit) => {
     unit.chapters.forEach((chapter) => {
@@ -26,7 +31,12 @@ function ConfirmChapters({ course }: ConfirmChaptersProps) {
     });
   });
 
-  console.log(chapterRef);
+  const totalChapterCount = useMemo(() => {
+    return course.units.reduce((acc, unit) => {
+      return acc + unit.chapters.length;
+    }, 0);
+  }, [course.units]);
+
   return (
     <div className="w-full">
       {course.units.map((unit, unitIndex) => {
@@ -40,6 +50,8 @@ function ConfirmChapters({ course }: ConfirmChaptersProps) {
               {unit.chapters.map((chapter, chapterIndex) => {
                 return (
                   <ChapterCard
+                    completedChapters={completedChapters}
+                    setCompletedChapters={setCompletedChapters}
                     ref={chapterRef[chapter.id]}
                     key={chapter.id}
                     chapter={chapter}
@@ -71,10 +83,12 @@ function ConfirmChapters({ course }: ConfirmChaptersProps) {
             type="button"
             className="bg-slate-800 font-semibold hover:bg-slate-600"
             onClick={() => {
+              setIsLoading(true);
               Object.values(chapterRef).forEach((ref) => {
                 ref.current?.triggerLoad();
               });
             }}
+            disabled={isLoading}
           >
             Generate
           </Button>
