@@ -1,6 +1,10 @@
 import prisma from "@/lib/db";
 import { strict_output } from "@/lib/gpt";
-import { getTranscript, searchYoutube } from "@/lib/youtube";
+import {
+  getQuestionsFromTranscript,
+  getTranscript,
+  searchYoutube,
+} from "@/lib/youtube";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -38,7 +42,42 @@ export async function POST(request: Request) {
       { summary: "Summary of the transcript" },
     );
 
-    return NextResponse.json({ videoId, transcript, summary });
+    // video questions
+    const questions = await getQuestionsFromTranscript(
+      transcript,
+      chapter.name,
+    );
+
+    await prisma.question.createMany({
+      data: questions.map((question) => {
+        let options = [
+          question.answer,
+          question.option1,
+          question.option2,
+          question.option3,
+        ];
+        // shuffle answer and option choices
+        options = options.sort(() => Math.random() - 0.5);
+        return {
+          question: question.question,
+          answer: question.answer,
+          options: JSON.stringify(options),
+          chapterId,
+        };
+      }),
+    });
+
+    await prisma.chapter.update({
+      where: {
+        id: chapterId,
+      },
+      data: {
+        videoId,
+        summary,
+      },
+    });
+
+    return NextResponse.json({ success: true });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json("Error fetching chapter information", {
@@ -47,5 +86,3 @@ export async function POST(request: Request) {
     }
   }
 }
-
-//todo: generate questions

@@ -4,6 +4,7 @@ import { Chapter } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 interface ChapterCardProps {
   chapter: Chapter;
@@ -29,7 +30,15 @@ const ChapterCard = React.forwardRef<ChapterCardHandler, ChapterCardProps>(
       async triggerLoad() {
         getChapterInfo(undefined, {
           onSuccess: () => {
-            console.log("success");
+            setSuccess(true);
+            toast.success("Generating courses");
+          },
+          onError: (error) => {
+            console.log(error);
+            setSuccess(false);
+            toast.error(
+              "Error occurred while generating course. Please try again.",
+            );
           },
         });
       },
