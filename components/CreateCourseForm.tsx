@@ -74,7 +74,7 @@ function CreateCourseForm() {
                   <FormControl className="flex-[8]">
                     <Input
                       className="focus-visible:ring-slate-500"
-                      placeholder=" Enter a main topic you want to learn more about"
+                      placeholder="Enter a main topic you want to learn more about"
                       {...field}
                     />
                   </FormControl>
