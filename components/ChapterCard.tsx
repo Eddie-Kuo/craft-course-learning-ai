@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { BiLoaderCircle } from "react-icons/bi";
 
 interface ChapterCardProps {
   chapter: Chapter;
@@ -30,10 +31,12 @@ const ChapterCard = React.forwardRef<ChapterCardHandler, ChapterCardProps>(
     });
 
     const addChapterIdToSet = useCallback(() => {
-      const newSet = new Set(completedChapters);
-      newSet.add(chapter.id);
-      setCompletedChapters(newSet);
-    }, [completedChapters, chapter.id, setCompletedChapters]);
+      setCompletedChapters((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(chapter.id);
+        return newSet;
+      });
+    }, [chapter.id, setCompletedChapters]);
 
     // check if id to video already exists
     useEffect(() => {
@@ -79,6 +82,7 @@ const ChapterCard = React.forwardRef<ChapterCardHandler, ChapterCardProps>(
         <h5>
           Chapter {chapterIndex + 1}: {chapter.name}
         </h5>
+        {isLoading && <BiLoaderCircle className="animate-spin" />}
       </div>
     );
   },

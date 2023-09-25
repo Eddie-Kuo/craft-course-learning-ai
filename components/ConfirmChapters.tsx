@@ -79,19 +79,31 @@ function ConfirmChapters({ course }: ConfirmChaptersProps) {
             <MdKeyboardArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Link>
-          <Button
-            type="button"
-            className="bg-slate-800 font-semibold hover:bg-slate-600"
-            onClick={() => {
-              setIsLoading(true);
-              Object.values(chapterRef).forEach((ref) => {
-                ref.current?.triggerLoad();
-              });
-            }}
-            disabled={isLoading}
-          >
-            Generate
-          </Button>
+
+          {totalChapterCount === completedChapters.size ? (
+            <Link
+              href={`/course/${course.id}/0/0`}
+              className={buttonVariants({
+                className: "bg-sky-600 font-semibold",
+              })}
+            >
+              Save & Continue
+            </Link>
+          ) : (
+            <Button
+              type="button"
+              className="bg-slate-800 font-semibold hover:bg-slate-600"
+              onClick={() => {
+                setIsLoading(true);
+                Object.values(chapterRef).forEach((ref) => {
+                  ref.current?.triggerLoad();
+                });
+              }}
+              disabled={isLoading}
+            >
+              Generate
+            </Button>
+          )}
         </div>
         <Separator className="flex-[1] bg-zinc-400" />
       </div>
