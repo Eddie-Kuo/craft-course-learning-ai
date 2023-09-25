@@ -59,6 +59,7 @@ function ConfirmChapters({ course }: ConfirmChaptersProps) {
           <Button
             type="button"
             className="bg-slate-800 font-semibold hover:bg-slate-600"
+            onClick={() => {}}
           >
             Generate
           </Button>
