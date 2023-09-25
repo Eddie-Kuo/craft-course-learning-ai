@@ -23,7 +23,13 @@ function ConfirmChapters({ course }: ConfirmChaptersProps) {
             <h3 className="text-2xl font-semibold">{unit.name}</h3>
             <div>
               {unit.chapters.map((chapter, chapterIndex) => {
-                return <ChapterCard key={chapter.id} />;
+                return (
+                  <ChapterCard
+                    key={chapter.id}
+                    chapter={chapter}
+                    chapterIndex={chapterIndex}
+                  />
+                );
               })}
             </div>
           </div>
