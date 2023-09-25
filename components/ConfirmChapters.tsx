@@ -3,8 +3,9 @@
 import { cn } from "@/lib/utils";
 import { Chapter, Course, Unit } from "@prisma/client";
 import Link from "next/link";
+import React from "react";
 import { MdKeyboardArrowLeft } from "react-icons/md";
-import ChapterCard from "./ChapterCard";
+import ChapterCard, { ChapterCardHandler } from "./ChapterCard";
 import { Button, buttonVariants } from "./ui/button";
 import { Separator } from "./ui/separator";
 
@@ -17,6 +18,15 @@ interface ConfirmChaptersProps {
 }
 
 function ConfirmChapters({ course }: ConfirmChaptersProps) {
+  const chapterRef: Record<string, React.RefObject<ChapterCardHandler>> = {};
+  course.units.forEach((unit) => {
+    unit.chapters.forEach((chapter) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      chapterRef[chapter.id] = React.useRef(null);
+    });
+  });
+
+  console.log(chapterRef);
   return (
     <div className="w-full">
       {course.units.map((unit, unitIndex) => {
@@ -30,6 +40,7 @@ function ConfirmChapters({ course }: ConfirmChaptersProps) {
               {unit.chapters.map((chapter, chapterIndex) => {
                 return (
                   <ChapterCard
+                    ref={chapterRef[chapter.id]}
                     key={chapter.id}
                     chapter={chapter}
                     chapterIndex={chapterIndex}
@@ -59,7 +70,11 @@ function ConfirmChapters({ course }: ConfirmChaptersProps) {
           <Button
             type="button"
             className="bg-slate-800 font-semibold hover:bg-slate-600"
-            onClick={() => {}}
+            onClick={() => {
+              Object.values(chapterRef).forEach((ref) => {
+                ref.current?.triggerLoad();
+              });
+            }}
           >
             Generate
           </Button>
