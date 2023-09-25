@@ -1,7 +1,12 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { Chapter, Course, Unit } from "@prisma/client";
+import Link from "next/link";
+import { MdKeyboardArrowLeft } from "react-icons/md";
 import ChapterCard from "./ChapterCard";
+import { Button, buttonVariants } from "./ui/button";
+import { Separator } from "./ui/separator";
 
 interface ConfirmChaptersProps {
   course: Course & {
@@ -35,6 +40,31 @@ function ConfirmChapters({ course }: ConfirmChaptersProps) {
           </div>
         );
       })}
+
+      <div className="mb-32 mt-4 flex items-center justify-center">
+        <Separator className="flex-[1] bg-zinc-400" />
+        <div className="mx-2 flex gap-2">
+          <Link
+            href="/dashboard"
+            className={cn(
+              buttonVariants({
+                variant: "secondary",
+              }),
+              "font-semibold",
+            )}
+          >
+            <MdKeyboardArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Link>
+          <Button
+            type="button"
+            className="bg-slate-800 font-semibold hover:bg-slate-600"
+          >
+            Generate
+          </Button>
+        </div>
+        <Separator className="flex-[1] bg-zinc-400" />
+      </div>
     </div>
   );
 }
