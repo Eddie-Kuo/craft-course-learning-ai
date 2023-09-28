@@ -1,6 +1,8 @@
 "use client";
 import { Chapter, Question } from "@prisma/client";
 import { useCallback, useState } from "react";
+import { Label } from "./ui/label";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 interface QuizCardProps {
   chapter: Chapter & {
@@ -30,7 +32,38 @@ function QuizCard({ chapter }: QuizCardProps) {
     });
   }, [answer, questionState, chapter.questions]);
 
-  return <div>Hello</div>;
+  return (
+    <div>
+      <h1>Concept Check</h1>
+      <div>
+        {chapter.questions.map((question) => {
+          const options = JSON.parse(question.options) as string[];
+          return (
+            <div key={question.id}>
+              <h1>{question.question}</h1>
+              <div>
+                <RadioGroup>
+                  {options.map((option, index) => {
+                    return (
+                      <div key={index}>
+                        <RadioGroupItem
+                          value={option}
+                          id={question.id + index.toString()}
+                        />
+                        <Label htmlFor={question.id + index.toString()}>
+                          {option}
+                        </Label>
+                      </div>
+                    );
+                  })}
+                </RadioGroup>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 export default QuizCard;
