@@ -53,8 +53,8 @@ async function CoursePage({ params: { slug } }: pageProps) {
             unitIndex={unitIndex}
             chapterIndex={chapterIndex}
           />
+          <QuizCard chapter={chapter} />
         </div>
-        <QuizCard chapter={chapter} />
       </div>
     </div>
   );

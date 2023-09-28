@@ -14,7 +14,7 @@ interface CourseSideBarProps {
 
 async function CourseSideBar({ course, currentChapter }: CourseSideBarProps) {
   return (
-    <div className="absolute top-1/2 -translate-y-1/2 rounded-r-3xl bg-secondary p-6">
+    <div className="absolute flex h-full flex-col justify-center rounded-r-3xl bg-secondary p-6 sm:mt-0">
       <h1 className="text-3xl font-semibold uppercase text-darkText">
         {course.name}
       </h1>

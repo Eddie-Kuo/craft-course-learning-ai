@@ -1,6 +1,7 @@
 "use client";
 import { Chapter, Question } from "@prisma/client";
 import { useCallback, useState } from "react";
+import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
@@ -33,7 +34,7 @@ function QuizCard({ chapter }: QuizCardProps) {
   }, [answer, questionState, chapter.questions]);
 
   return (
-    <div>
+    <div className="ml-8 mt-64 flex-[1]">
       <h1>Concept Check</h1>
       <div>
         {chapter.questions.map((question) => {
@@ -62,6 +63,9 @@ function QuizCard({ chapter }: QuizCardProps) {
           );
         })}
       </div>
+      <Button onClick={checkAnswer} className="w-full" size="lg">
+        Check Answer
+      </Button>
     </div>
   );
 }
