@@ -44,15 +44,23 @@ function QuizCard({ chapter }: QuizCardProps) {
             <div
               key={question.id}
               className={cn(
-                "mt-6 rounded-md border border-zinc-400 p-2",
+                "mt-6 rounded-md border border-zinc-400 bg-zinc-500/40 p-4",
                 questionState[question.id] === false && "bg-red-500",
                 questionState[question.id] === true && "bg-green-500",
-                questionState[question.id] === null && "bg-secondary",
               )}
             >
               <h1 className="font-semibold">{question.question}</h1>
               <div className="py-2">
-                <RadioGroup>
+                <RadioGroup
+                  onValueChange={(e) => {
+                    setAnswer((prev) => {
+                      return {
+                        ...prev,
+                        [question.id]: e,
+                      };
+                    });
+                  }}
+                >
                   {options.map((option, index) => {
                     return (
                       <div key={index} className="flex gap-2">
