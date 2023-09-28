@@ -34,8 +34,6 @@ function QuizCard({ chapter }: QuizCardProps) {
     });
   }, [answer, questionState, chapter.questions]);
 
-  console.log(chapter.questions);
-
   return (
     <>
       <div className="ml-8 mt-52 flex-[1]">
