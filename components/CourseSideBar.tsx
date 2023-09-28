@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Chapter, Course, Unit } from "@prisma/client";
 import Link from "next/link";
 import { Separator } from "./ui/separator";
@@ -8,9 +9,10 @@ interface CourseSideBarProps {
       chapters: Chapter[];
     })[];
   };
+  currentChapter: string;
 }
 
-async function CourseSideBar({ course }: CourseSideBarProps) {
+async function CourseSideBar({ course, currentChapter }: CourseSideBarProps) {
   return (
     <div className="absolute top-1/2 -translate-y-1/2 rounded-r-3xl bg-secondary p-6">
       <h1 className="text-3xl font-semibold uppercase text-darkText">
@@ -25,7 +27,10 @@ async function CourseSideBar({ course }: CourseSideBarProps) {
               return (
                 <div
                   key={chapterIndex}
-                  className="mt-1 rounded-md bg-zinc-300 px-2 py-1"
+                  className={cn(
+                    "mt-1 rounded-md bg-zinc-300 px-2 py-1",
+                    chapter.id === currentChapter && "bg-sky-400",
+                  )}
                 >
                   <Link
                     href={`/course/${course.id}/${unitIndex}/${chapterIndex}`}

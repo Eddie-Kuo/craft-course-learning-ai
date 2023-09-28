@@ -36,7 +36,7 @@ async function CoursePage({ params: { slug } }: pageProps) {
     return redirect("/dashboard");
   }
 
-  return <CourseSideBar course={course} />;
+  return <CourseSideBar course={course} currentChapter={chapter.id} />;
 }
 
 export default CoursePage;
