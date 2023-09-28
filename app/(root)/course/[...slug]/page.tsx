@@ -1,3 +1,4 @@
+import CourseSideBar from "@/components/CourseSideBar";
 import prisma from "@/lib/db";
 import { redirect } from "next/navigation";
 
@@ -35,7 +36,7 @@ async function CoursePage({ params: { slug } }: pageProps) {
     return redirect("/dashboard");
   }
 
-  return <CourseSideBar />;
+  return <CourseSideBar course={course} />;
 }
 
 export default CoursePage;
