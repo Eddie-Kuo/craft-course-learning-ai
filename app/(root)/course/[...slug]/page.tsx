@@ -1,4 +1,5 @@
 import CourseSideBar from "@/components/CourseSideBar";
+import VideoSummary from "@/components/VideoSummary";
 import prisma from "@/lib/db";
 import { redirect } from "next/navigation";
 
@@ -36,7 +37,21 @@ async function CoursePage({ params: { slug } }: pageProps) {
     return redirect("/dashboard");
   }
 
-  return <CourseSideBar course={course} currentChapter={chapter.id} />;
+  return (
+    <div>
+      <CourseSideBar course={course} currentChapter={chapter.id} />
+      <div className="ml-[450px]">
+        <div className="flex">
+          <VideoSummary
+            unit={unit}
+            chapter={chapter}
+            unitIndex={unitIndex}
+            chapterIndex={chapterIndex}
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default CoursePage;
