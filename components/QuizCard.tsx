@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 import { Chapter, Question } from "@prisma/client";
 import { useCallback, useState } from "react";
 import { Button } from "./ui/button";
@@ -34,19 +35,27 @@ function QuizCard({ chapter }: QuizCardProps) {
   }, [answer, questionState, chapter.questions]);
 
   return (
-    <div className="ml-8 mt-64 flex-[1]">
+    <div className="ml-8 mt-52 flex-[1]">
       <h1>Concept Check</h1>
       <div>
         {chapter.questions.map((question) => {
           const options = JSON.parse(question.options) as string[];
           return (
-            <div key={question.id}>
-              <h1>{question.question}</h1>
-              <div>
+            <div
+              key={question.id}
+              className={cn(
+                "mt-6 rounded-md border border-zinc-400 p-2",
+                questionState[question.id] === false && "bg-red-500",
+                questionState[question.id] === true && "bg-green-500",
+                questionState[question.id] === null && "bg-secondary",
+              )}
+            >
+              <h1 className="font-semibold">{question.question}</h1>
+              <div className="py-2">
                 <RadioGroup>
                   {options.map((option, index) => {
                     return (
-                      <div key={index}>
+                      <div key={index} className="flex gap-2">
                         <RadioGroupItem
                           value={option}
                           id={question.id + index.toString()}
@@ -63,7 +72,7 @@ function QuizCard({ chapter }: QuizCardProps) {
           );
         })}
       </div>
-      <Button onClick={checkAnswer} className="w-full" size="lg">
+      <Button onClick={checkAnswer} className="mt-2 w-full">
         Check Answer
       </Button>
     </div>
