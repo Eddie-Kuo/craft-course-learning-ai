@@ -62,7 +62,7 @@ async function CoursePage({ params: { slug } }: pageProps) {
 
         {/* Chapter navigation buttons */}
         <div className="mt-4 h-[1px] flex-[1] bg-gray-500 text-gray-500" />
-        <div className="flex justify-between gap-10 pt-5">
+        <div className="flex justify-between gap-10 pb-14 pt-5">
           {prevChapter ? (
             <Link
               href={`/course/${course.id}/${unitIndex}/${chapterIndex - 1}`}
