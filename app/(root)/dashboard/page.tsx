@@ -1,12 +1,18 @@
 import DashboardCourseCard from "@/components/DashboardCourseCard";
+import getSession from "@/lib/actions/getSession";
+import prisma from "@/lib/db";
 
 export default async function Home() {
-  // fetch course data
-  // const data = await prisma.course.findMany({
-  //   where: {
+  const session = await getSession();
 
-  //   }
-  // })
+  // fetch course data
+  const data = await prisma.course.findMany({
+    where: {
+      userId: session?.user?.id,
+    },
+  });
+
+  console.log(data);
 
   return (
     <div className=" mx-auto max-w-5xl pt-40">
