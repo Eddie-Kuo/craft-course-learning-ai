@@ -14,7 +14,7 @@ function DashboardCourseCard({ course }: DashboardCourseCardProps) {
   return (
     <div className="flex flex-col items-center rounded-md border border-zinc-400 p-1">
       <div className="relative">
-        <Link href={``}>
+        <Link href={`/course/${course.id}/0/0`}>
           <Image
             src={course.image || ""}
             width={300}
