@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -21,12 +22,16 @@ type CourseInput = z.infer<typeof createChapterSchema>;
 function CreateCourseForm() {
   const router = useRouter();
 
+  const session = useSession();
+  const userId = session?.data?.user?.id;
+
   // mutation is any action (create/update/delete) that hits an api endpoint - mutate renamed to createChapter
   const { mutate: createChapter, isLoading } = useMutation({
     mutationFn: async ({ title, units }: CourseInput) => {
       const response = await axios.post("/api/course/createChapter", {
         title,
         units,
+        userId,
       });
       return response.data;
     },
