@@ -52,6 +52,8 @@ model User {
 
   accounts Account[]
   sessions Session[]
+
+  courses Course[]
 }
 
 // Courses contain many units
@@ -59,7 +61,10 @@ model Course {
   id    String @id @default(cuid())
   name  String
   image String
+  userId String
   units Unit[]
+  user  User   @relation(fields: [userId], references: [id])
+  @@index ([userId], name: "userId")
 }
 
 

@@ -7,7 +7,7 @@ import { ZodError } from "zod";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const { userId, ...body } = await request.json();
     const { title, units } = createChapterSchema.parse(body);
 
     type outputUnits = {
@@ -47,6 +47,7 @@ export async function POST(request: Request) {
       data: {
         name: title,
         image: course_image,
+        userId,
       },
     });
 
