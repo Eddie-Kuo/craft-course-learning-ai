@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { z } from "zod";
+import SubscriptionAction from "./SubscriptionAction";
 import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { Input } from "./ui/input";
@@ -170,6 +171,8 @@ function CreateCourseForm() {
           </Button>
         </form>
       </Form>
+
+      <SubscriptionAction />
     </div>
   );
 }
