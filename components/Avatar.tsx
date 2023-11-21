@@ -53,7 +53,7 @@ function Avatar({ user, credits }: AvatarProps) {
           {/* Settings */}
           <Link
             className="text-md flex justify-start rounded-md bg-slate-100 px-4 py-2 font-medium text-darkText hover:bg-slate-200"
-            href="/upgrade"
+            href="/settings"
           >
             Upgrade to Pro
           </Link>
