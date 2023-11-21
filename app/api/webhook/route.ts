@@ -21,13 +21,13 @@ export async function POST(request: Request) {
 
   const session = event.data.object as Stripe.Checkout.Session;
 
-  // new subcription created
+  // new subscription created
   if (event.type === "checkout.session.completed") {
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string,
     );
     if (!session?.metadata?.userId) {
-      return new NextResponse("webhook error, no userid", { status: 400 });
+      return new NextResponse("webhook error, no userId", { status: 400 });
     }
     await prisma.userSubscription.create({
       data: {
@@ -43,16 +43,18 @@ export async function POST(request: Request) {
   }
 
   if (event.type === "invoice.payment_succeeded") {
-    const subcription = await stripe.subscriptions.retrieve(
+    const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string,
     );
     await prisma.userSubscription.update({
       where: {
-        stripeSubscriptionId: subcription.id,
+        stripeSubscriptionId: subscription.id,
       },
       data: {
-        stripePriceId: subcription.items.data[0].price.id,
-        stripeCurrentPeriodEnd: new Date(subcription.current_period_end * 1000),
+        stripePriceId: subscription.items.data[0].price.id,
+        stripeCurrentPeriodEnd: new Date(
+          subscription.current_period_end * 1000,
+        ),
       },
     });
   }
