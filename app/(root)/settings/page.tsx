@@ -1,3 +1,4 @@
+import SubscriptionButton from "@/components/SubscriptionButton";
 import { checkSubscription } from "@/lib/subscription";
 
 interface pageProps {}
@@ -17,6 +18,8 @@ async function SettingsPage({}: pageProps) {
           You are currently a Free user
         </p>
       )}
+
+      <SubscriptionButton subscribedUser={subscribedUser} />
     </div>
   );
 }
