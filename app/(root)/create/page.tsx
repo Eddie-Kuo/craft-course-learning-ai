@@ -1,11 +1,18 @@
 import CreateCourseForm from "@/components/CreateCourseForm";
 import getSession from "@/lib/actions/getSession";
+import { checkSubscription } from "@/lib/subscription";
+import { redirect } from "next/navigation";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
 interface pageProps {}
 
 async function CreatePage({}: pageProps) {
   const session = await getSession();
+  if (!session) {
+    return redirect("/dashboard");
+  }
+
+  const subscribedUser = await checkSubscription();
 
   return (
     <div className="mx-auto flex h-screen max-w-3xl flex-col items-center gap-4 px-8 pt-44">
@@ -21,7 +28,7 @@ async function CreatePage({}: pageProps) {
           ullam doloribus nobis!
         </div>
       </div>
-      <CreateCourseForm />
+      <CreateCourseForm subscribedUser />
     </div>
   );
 }
