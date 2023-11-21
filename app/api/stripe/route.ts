@@ -1,6 +1,6 @@
 import getSession from "@/lib/actions/getSession";
 import prisma from "@/lib/db";
-import { stripe } from "@/lib/strips";
+import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
 
 const settingsURL = process.env.NEXT_PUBLIC_URL + "/settings";
