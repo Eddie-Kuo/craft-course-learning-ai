@@ -20,7 +20,7 @@ import { Separator } from "./ui/separator";
 
 type CourseInput = z.infer<typeof createChapterSchema>;
 
-function CreateCourseForm() {
+function CreateCourseForm({ subscribedUser }: { subscribedUser: boolean }) {
   const router = useRouter();
 
   const session = useSession();
@@ -171,8 +171,7 @@ function CreateCourseForm() {
           </Button>
         </form>
       </Form>
-
-      <SubscriptionAction />
+      {!subscribedUser && <SubscriptionAction />}
     </div>
   );
 }
