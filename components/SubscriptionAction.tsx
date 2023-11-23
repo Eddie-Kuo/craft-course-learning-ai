@@ -14,7 +14,7 @@ function SubscriptionAction({}: SubscriptionActionProps) {
   const handleSubscribe = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post("/api/stripe");
+      const response = await axios.get("/api/stripe");
       window.location.href = response.data.url;
     } catch (error) {
       console.log("Error: Subscription submission failed", error);
