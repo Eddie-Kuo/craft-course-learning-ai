@@ -1,34 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Description
+A learning platform for users to deep dive on topics utilizing the power of AI to help generate relevant Youtube videos, detailed chapters, and an end of unit recap quiz.
+
+Built with Next.js 13.4, TailwindCSS, Prisma, PlanetScale DB, and more!
 
 ## Getting Started
 
-First, run the development server:
-
+1. Download dependencies once the repo has been cloned:
 ```bash
+// Instal dependencies:
+npm install
+
+// Run development server:
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
+2. Set up .env file
+   
+```bash
+DATABASE_URL=
+
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+NEXTAUTH_SECRET='Canbeanythingyouwant'
+
+OPENAI_API_KEY=
+
+UNSPLASH_API_KEY=
+YOUTUBE_API=
+
+STRIPE_API_KEY=
+STRIPE_WEBHOOK_SECRET=
+
+NEXT_PUBLIC_URL='http://localhost:3000'
+```
+Notes: 
+- The Databse used in this project is Planetscale
+- The ORM of choice is Prisma
+- Documentation for OpenAI API: https://platform.openai.com/docs/api-reference
+- Documentation for Unsplash API: https://unsplash.com/documentation
+- Documentation for Youtube API: https://developers.google.com/youtube/v3/getting-started
+- Documentation for Stripe Integration: https://stripe.com/docs
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Once the APIs are set up (mainly just need the database connected) run:
+   
+```bash
+// To push models into database:
+npx prisma db push
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+// To view your database with prisma:
+npx prisma studio
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Screenshots
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![Screenshot 2023-11-23 at 2 11 35 PM](https://github.com/Eddie-Kuo/craft-course-learning-ai/assets/105310669/fda93d40-a3da-4d0b-8030-92a63c9560e7)
+![Screenshot 2023-11-23 at 2 11 22 PM](https://github.com/Eddie-Kuo/craft-course-learning-ai/assets/105310669/2b2bd8d8-ae8e-4abb-9d16-48b4d2306511)
+![Screenshot 2023-11-23 at 2 11 05 PM](https://github.com/Eddie-Kuo/craft-course-learning-ai/assets/105310669/9e6b928b-9efd-4e6a-a1ba-44ae4cb1434e)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
