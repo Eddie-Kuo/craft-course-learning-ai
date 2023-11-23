@@ -28,7 +28,7 @@ async function CreatePage({}: pageProps) {
           ullam doloribus nobis!
         </div>
       </div>
-      <CreateCourseForm subscribedUser />
+      <CreateCourseForm subscribedUser={subscribedUser} />
     </div>
   );
 }

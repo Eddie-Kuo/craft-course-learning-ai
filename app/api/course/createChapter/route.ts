@@ -1,5 +1,7 @@
+import getSession from "@/lib/actions/getSession";
 import prisma from "@/lib/db";
 import { strict_output } from "@/lib/gpt";
+import { checkSubscription } from "@/lib/subscription";
 import getUnsplashImage from "@/lib/unsplash";
 import createChapterSchema from "@/lib/validations/course";
 import { NextResponse } from "next/server";
@@ -7,6 +9,19 @@ import { ZodError } from "zod";
 
 export async function POST(request: Request) {
   try {
+    // check subscription
+    const session = await getSession();
+    if (!session?.user) {
+      return new NextResponse("You are unauthorized to perform this action", {
+        status: 401,
+      });
+    }
+
+    const subscribedUser = await checkSubscription();
+    if (!subscribedUser && session.user.credits <= 0) {
+      return new NextResponse("You have no credits left", { status: 402 });
+    }
+
     const { userId, ...body } = await request.json();
     const { title, units } = createChapterSchema.parse(body);
 
@@ -72,6 +87,18 @@ export async function POST(request: Request) {
         }),
       });
     }
+
+    // update the amount of credits the user has
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        credits: {
+          decrement: 1,
+        },
+      },
+    });
 
     return NextResponse.json({ course_id: course.id });
   } catch (error) {
